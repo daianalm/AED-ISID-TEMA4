@@ -1,0 +1,165 @@
+Algoritmo Materiales
+
+    // Definir el tipo de registro para los materiales
+    Tipo RegSal = Registro
+        Tecnologia: Carácter
+        Nombre: Cadena[30]
+        Cantidad: Cadena[3]
+        Estado: Cadena[100]
+        Codigo: Cadena[5]
+    Fin Registro
+
+    // Declarar variables globales
+    ArchivoMateriales: Archivo de Texto
+    Sal: Archivo de Texto
+    ArchSal: Archivo de RegSal
+    v: Carácter
+    CdUs: Cadena
+    ContL, ContP, ContB: Entero
+    Arch: RegSal
+
+    // Procedimiento para inicializar las variables ContL, ContP y ContB a 0
+    Procedimiento InicializarVariables
+        ContL <- 0
+        ContP <- 0
+        ContB <- 0
+    Fin Procedimiento
+
+    // Procedimiento para escribir un material en el archivo de salida
+    Procedimiento EscribirMaterial(Arch Como RegSal)
+        Escribir Sal, 'Tecnologia ', Arch.Tecnologia, ':'
+        Escribir Sal, 'Nombre: ', Arch.Nombre
+        Escribir Sal, 'Cantidad: ', Arch.Cantidad
+        Escribir Sal, 'Estado: ', Arch.Estado
+        Escribir Sal, 'Codigo: ', Arch.Codigo
+        Escribir Sal // Agregar una línea en blanco para separar los registros
+    Fin Procedimiento
+
+    // Procedimiento para procesar un material
+    Procedimiento ProcesarMaterial
+        Definir IsLB Como Booleano
+        IsLB <- Falso
+
+        Si v PerteneceA Tec Entonces
+            Si v = 'B' Entonces
+                IsLB <- Verdadero
+                Arch.Tecnologia <- v
+                Escribir 'Tecnologia B:'
+                Leer ArchivoMateriales, Arch.Nombre
+                Leer ArchivoMateriales, Arch.Cantidad
+                Leer ArchivoMateriales, Arch.Estado
+                Leer ArchivoMateriales, Arch.Codigo
+
+                EscribirMaterial(Arch)
+                ContB <- ContB + 1
+            Sino
+                Si (v = 'L') o (v = 'P') Entonces
+                    Arch.Tecnologia <- v
+                    Escribir Sal, 'Tecnologia ', v, ': '
+                    Leer ArchivoMateriales, Arch.Nombre
+                    Leer ArchivoMateriales, Arch.Cantidad
+                    Leer ArchivoMateriales, Arch.Estado
+                    Leer ArchivoMateriales, Arch.Codigo
+
+                    Si v = 'L' Entonces
+                        ContL <- ContL + 1
+                    Sino
+                        ContP <- ContP + 1
+                        EscribirMaterial(Arch)
+                    Fin Si
+                Fin Si
+            Fin Si
+        Fin Si
+
+        Si No IsLB Entonces
+            Leer ArchivoMateriales
+        Fin Si
+    Fin Procedimiento
+
+    // Procedimiento para generar un archivo específico con materiales de tecnología L y código especificado
+    Procedimiento GenerarArchivoEspecifico(Codigo Como Cadena)
+        Abrir ArchivoMateriales
+        Abrir ArchSal Para Escritura
+
+        Definir Encontrado Como Booleano
+        Encontrado <- Falso
+
+        Mientras No EsFinalDeArchivo(ArchivoMateriales) Hacer
+            Leer ArchivoMateriales, v
+            Leer ArchivoMateriales, Arch.Nombre
+            Leer ArchivoMateriales, Arch.Cantidad
+            Leer ArchivoMateriales, Arch.Estado
+            Leer ArchivoMateriales, Arch.Codigo
+
+            Si (Arch.Tecnologia = 'L') y (Arch.Codigo = Codigo) Entonces
+                Encontrado <- Verdadero
+                Escribir ArchSal, Arch
+            Fin Si
+        Fin Mientras
+
+        Cerrar ArchSal
+        Cerrar ArchivoMateriales
+
+        Si No Encontrado Entonces
+            Escribir 'No se encontraron materiales de tecnología L con el código específico.'
+        Sino
+            Escribir 'Archivo de salida específico generado.'
+        Fin Si
+    Fin Procedimiento
+
+    // Procedimiento para mostrar los resultados
+    Procedimiento MostrarResultados
+        Escribir 'La cantidad de materiales de cada tecnologia son los siguientes:'
+        Escribir 'TECNOLOGIA L: ', ContL
+        Escribir 'TECNOLOGIA P: ', ContP
+        Escribir 'TECNOLOGIA B: ', ContB
+    Fin Procedimiento
+
+    // Procedimiento para mostrar el contenido del archivo de salida
+    Procedimiento MostrarArchivoSalida
+        Abrir Sal
+        Escribir 'Contenido del archivo de salida:'
+        Escribir '--------------------------------'
+        Escribir
+
+        Mientras No EsFinalDeArchivo(Sal) Hacer
+            Leer Sal, Linea
+            Escribir Linea
+        Fin Mientras
+
+        Cerrar Sal
+        Escribir
+        Escribir '--------------------------------'
+        Escribir '||Proceso completado||'
+    Fin Procedimiento
+
+    // Programa principal
+    Inicio
+        Asignar ArchivoMateriales, 'materiales.txt'
+        Si No Existe(ArchivoMateriales) Entonces
+            Escribir 'El archivo "materiales.txt" no existe.'
+            Detener
+        Fin Si
+
+        Asignar Sal, 'SecuenciaSalida.txt'
+        Abrir Sal Para Escritura
+
+        Escribir 'Ingrese el código del material para generar el archivo: '
+        Leer CdUs
+
+        InicializarVariables
+
+        Mientras No EsFinalDeArchivo(ArchivoMateriales) Hacer
+            Leer ArchivoMateriales, v
+            ProcesarMaterial
+        Fin Mientras
+
+        MostrarResultados
+
+        Escribir 'Generando archivo de salida específico...'
+        GenerarArchivoEspecifico(CdUs)
+
+        Escribir
+        MostrarArchivoSalida
+    Fin
+Fin Algoritmo

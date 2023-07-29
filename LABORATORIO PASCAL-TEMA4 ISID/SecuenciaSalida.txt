@@ -1,0 +1,9 @@
+Tecnologia L: Nombre: #Martillo#100#En Stock#12345
+Cantidad: P#D
+Estado: L#Taladro#25#Agotado#54321
+Codigo: B#Sie
+Tecnologia B:
+Nombre: #Pintura#15#En Stock#24680
+Cantidad: L#T
+Estado: 
+Codigo: 

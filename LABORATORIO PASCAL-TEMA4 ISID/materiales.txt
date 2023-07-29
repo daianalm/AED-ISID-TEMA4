@@ -1,0 +1,16 @@
+//archivo "materiales.txt" es el correcto. El archivo contiene 5 registros de materiales, cada uno con un código único y una tecnología asociada, como se especifica en el enunciado del problema.
+L#Martillo#100#En Stock#12345
+P#Destornillador#50#En Stock#67890
+L#Taladro#25#Agotado#54321
+B#Sierra#30#En Stock#09876
+P#Llave Inglesa#40#Agotado#13579
+B#Pintura#15#En Stock#24680
+L#Tornillo#500#En Stock#98765
+
+
+
+//Cada línea representa un material con el formato: CodigoTecnologia#NombreMaterial#Cantidad
+//CodigoTecnologia es un número entero de 5 dígitos.
+//# es un carácter especial que separa los campos.
+//NombreMaterial es una cadena de texto que representa el nombre del material (máximo 30 caracteres).
+//Cantidad es una cadena de texto que representa la cantidad del material (máximo 3 dígitos).
